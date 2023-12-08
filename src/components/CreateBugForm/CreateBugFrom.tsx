@@ -2,6 +2,8 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { useForm,  SubmitHandler, FormProvider } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import CommonSelect from "../common/CommonSelect/CommonSelect";
 import { USERS, PROJECTS } from "../../pages/ViewBug/consts/viewBug";
 import CommonButton from "../common/CommonButton/CommonButton";
@@ -18,13 +20,23 @@ interface ICreateBugForm {
     title: string;
     subtitle: string;
 }
+
+const yupSchema = yup
+  .object({
+    user: yup.string().required('Please select a user'),
+    project: yup.string().required('Please select a project'),
+    description: yup.string().required('Please write a description').max(10, 'No more than 10 characters'),
+  })
+  .required();
+
 function CreateBugFrom({ title, subtitle }: ICreateBugForm) {
-  const methods = useForm({
+  const methods = useForm<IFormInput>({
     defaultValues: {
       user: '',
       project: '',
       description: '',
     },
+    resolver: yupResolver(yupSchema)
   });
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
