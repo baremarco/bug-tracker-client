@@ -20,6 +20,7 @@ function CommonSelect({name, label, options}:ICommonSelect) {
     <Controller
       name={name}
       control={control} 
+      defaultValue=''
       render={({
         field: {onChange, value},
         fieldState: { error },

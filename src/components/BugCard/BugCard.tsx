@@ -3,7 +3,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
 
-interface ICommonCard {
+export interface ICommonCard {
  createdAt: string;
  username: string;
  project: string;

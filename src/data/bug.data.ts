@@ -1,4 +1,5 @@
 import { IParams, fetchBugs } from "../services/bug.service.ts";
+import { IBug } from "../typings/components/common/common";
 import { IFormInput } from "../typings/pages/viewBug.ts";
 import { DATE_FORMAT_API } from "../utils/constants.ts";
 
@@ -14,9 +15,9 @@ const getParams = ({
   end_date: endDate?.format(DATE_FORMAT_API),
 });
 
-export const getBugs = async (filter: IFormInput) => {
+export const getBugs = async (filter: IFormInput): Promise<IBug[]> => {
   const params = getParams(filter);
 
   const response = await fetchBugs(params);
-  return response;
+  return response.bugs.map(({id, description, creationDate, username, project}) => ({id, description, creationDate, username, project}));
 };

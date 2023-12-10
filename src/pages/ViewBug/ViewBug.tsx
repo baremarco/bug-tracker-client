@@ -3,7 +3,6 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import CommonSelect from "../../components/common/CommonSelect/CommonSelect";
-import { PROJECTS, BUGS } from "./consts/viewBug";
 import GridPageWrapper from "../../components/common/GridPageWrapper/GridPageWrapper";
 import BugCard from "../../components/BugCard/BugCard";
 import { viewBugsStyles } from "./styles";
@@ -11,14 +10,14 @@ import CommonButton from "../../components/common/CommonButton/CommonButton";
 import CommonDatePicker from "../../components/common/CommonDatePicker/CommonDatePicker";
 import { FormControl, FormLabel } from "@mui/material";
 import { IFormInput } from "../../typings/pages/viewBug.ts";
-import { getBugs } from "../../data/bug.data.ts";
 import useUser from "../../utils/hooks/useUser.tsx";
-import ErrorPage from "../../components/ErrorPage/ErrorPage.tsx";
+import useProject from "../../utils/hooks/useProject.tsx";
+import useBug from "../../utils/hooks/useBug.tsx";
+import { useNavigate } from "react-router-dom";
+import { ERROR_MSG_KEY } from "../../components/ErrorPage/ComponentErrorPage.tsx";
 
 function ViewBug() {
   const [outterError, setOuterError] = useState(false);
-  const {users, error} = useUser();
-  // const [bugs, setBugs] = useState<Bug []>([]);
 
   const methods = useForm<IFormInput>({
     defaultValues: {
@@ -29,9 +28,14 @@ function ViewBug() {
       outForm: "",
     },
   });
+
+  const {users, error: userError} = useUser();
+  const {projects, error: projectError} = useProject();
+  const {bugs, loading: bugLoading, error: bugError, setParams: setBugParams} = useBug();
+
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     const values = Object.values(data).reduce((acc, value) => {
-      if (value !== null && value !== undefined && value !== "") {
+      if (value !== null && value !== undefined && value !== '') {
         acc += 1;
       }
       return acc;
@@ -40,8 +44,7 @@ function ViewBug() {
     if (values <= 0) {
       setOuterError(true);
     } else {
-      const serviseResponse = await getBugs(data);
-      console.log({ serviseResponse });
+      setBugParams(data);
       setOuterError(false);
     }
   };
@@ -59,15 +62,16 @@ function ViewBug() {
             <CommonSelect
               label='Project'
               name='project'
-              options={PROJECTS}
+              options={projects}
             />
             <CommonDatePicker label='Start Date' name='startDate' />
             <CommonDatePicker label='End Date' name='endDate' />
             <CommonButton
               variant='contained'
               onClick={methods.handleSubmit(onSubmit)}
+              loading={bugLoading}
             >
-                            Find Bugs
+              Find Bugs
             </CommonButton>
           </FormProvider>
         </Box>
@@ -83,7 +87,7 @@ function ViewBug() {
   const getBody = () => {
     return (
       <Box sx={viewBugsStyles.body}>
-        {BUGS.map((bug) => (
+        {bugs.map((bug) => (
           <BugCard
             key={bug.id}
             createdAt={bug.creationDate}
@@ -96,9 +100,13 @@ function ViewBug() {
     );
   };
 
-  if (error) {
-    return <ErrorPage errorMsg={error.message}/>;
+  const navigate = useNavigate();
+
+  if (userError || projectError || bugError) {
+    const errorMsg = userError?.message || projectError?.message || bugError?.message;
+    navigate(`component-error-page?${ERROR_MSG_KEY}=${errorMsg}`);
   }
+
 
   return (
     <GridPageWrapper>

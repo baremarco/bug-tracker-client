@@ -7,7 +7,7 @@ export interface IFormInputProps {
 export interface IBug {
   id:           number;
   description:  string;
-  creationDate: Date;
+  creationDate: string;
   username:     string;
   project:      string;
 }

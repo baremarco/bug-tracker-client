@@ -4,10 +4,7 @@ import Typography from '@mui/material/Typography';
 import { errorPageStyles } from './styles';
 import { GENERAL_ERROR_MSG } from '../../utils/constants';
 
-interface IErrorPage {
-  errorMsg?: string;
-}
-function ErrorPage({ errorMsg }: IErrorPage) {
+function ErrorPage() {
   const error = useRouteError();
   return (
     <Box sx={errorPageStyles}>
@@ -16,7 +13,6 @@ function ErrorPage({ errorMsg }: IErrorPage) {
       <Typography variant='subtitle1' color='error'>
         {isRouteErrorResponse(error) && <i>{isRouteErrorResponse(error) && error.statusText}</i>}
         {error instanceof Error && <i>{error instanceof Error && error.message}</i>}
-        {errorMsg && <i>{errorMsg}</i>}
       </Typography>
     </Box>
   );

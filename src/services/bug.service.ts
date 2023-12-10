@@ -1,3 +1,4 @@
+import { IBug } from "../typings/components/common/common";
 import axiosInstance from "../utils/axiosInstance";
 
 export interface IParams {
@@ -8,6 +9,6 @@ export interface IParams {
 }
 
 export const fetchBugs = async (params: Partial<IParams>) => {
-  const response = axiosInstance.get('/bugs', { params });
-  return response;
+  const response = await axiosInstance.get<{bugs: IBug[]}>('/bugs', { params });
+  return response.data;
 };

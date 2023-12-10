@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
-import { getUsers } from "../../data/user.data.ts";
 import { IOption } from "../../typings/components/common/select";
 import { AxiosError } from "axios";
 import { GENERAL_ERROR_MSG } from "../constants.ts";
+import { getProjects } from "../../data/project.data.ts";
 
-function useUser() {
-  const [users, setUsers] = useState<IOption[]>([]);
+function useProject() {
+  const [projects, setProjects] = useState<IOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<{message: string, status?: number}>();
 
   useEffect(() => {
-    const listUsers = async () => {
+    const listProjects = async () => {
       try {
-        const usersResponse = await getUsers();
-        setUsers(usersResponse);
+        const projectsResponse = await getProjects();
+        setProjects(projectsResponse);
       } catch(err) {
         if (err instanceof AxiosError) {
           console.log(err);
@@ -29,11 +29,11 @@ function useUser() {
       }
     };
 
-    listUsers();
+    listProjects();
 
   }, []);
 
-  return { users, loading, error };
+  return { projects, loading, error };
 }
 
-export default useUser;
+export default useProject;
