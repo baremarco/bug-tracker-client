@@ -25,7 +25,7 @@ const yupSchema = yup
   .object({
     user: yup.string().required('Please select a user'),
     project: yup.string().required('Please select a project'),
-    description: yup.string().required('Please write a description').max(10, 'No more than 10 characters'),
+    description: yup.string().required('Please write a description').max(100, 'No more than 100 characters'),
   })
   .required();
 

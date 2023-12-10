@@ -33,3 +33,4 @@ export default {
 - [MaterialUI + React-hook-form](https://blog.logrocket.com/using-material-ui-with-react-hook-form/)
 - [MateriaUI](https://mui.com/components)
 - [MateriaUI Repo](https://github.com/theatypicaldeveloper/materialUi-in-react/)
+- [Axios best practices](https://www.dhiwise.com/post/the-new-age-axios-aetup-separation-of-concerns-in-react)

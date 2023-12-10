@@ -1,9 +1,9 @@
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { commonTypes } from '../../../typings';
 import { Controller, useFormContext } from 'react-hook-form';
 import { DATE_FORMAT } from '../../../utils/constants';
+import { IFormInputProps } from '../../../typings/components/common/common';
 
-function CommonDatePicker({name, label}: commonTypes.IFormInputProps) {
+function CommonDatePicker({name, label}: IFormInputProps) {
   const { control } = useFormContext();
   return (
     <Controller 

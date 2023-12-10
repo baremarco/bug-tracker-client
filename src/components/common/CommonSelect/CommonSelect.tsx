@@ -3,12 +3,13 @@ import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { selecTypes, commonTypes } from '../../../typings';
 import { Controller, useFormContext } from 'react-hook-form';
+import { IFormInputProps } from '../../../typings/components/common/common';
+import { IOption } from '../../../typings/components/common/select';
 
 
-interface ICommonSelect extends commonTypes.IFormInputProps {
-  options: selecTypes.IOption[] 
+interface ICommonSelect extends IFormInputProps {
+  options: IOption[] 
 }
 
 function CommonSelect({name, label, options}:ICommonSelect) {

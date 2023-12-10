@@ -1,8 +1,8 @@
 import TextField from '@mui/material/TextField';
-import { commonTypes } from '../../../typings';
+import { IFormInputProps } from '../../../typings/components/common/common';
 import { Controller, useFormContext } from 'react-hook-form';
 
-interface ICommonTextField extends commonTypes.IFormInputProps {
+interface ICommonTextField extends IFormInputProps {
   multiline: boolean;
   maxRows: number;
 }

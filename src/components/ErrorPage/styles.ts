@@ -3,5 +3,6 @@ export const errorPageStyles = {
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  width: '100%'
+  width: '100%',
+  marginTop: '25vh'
 };
