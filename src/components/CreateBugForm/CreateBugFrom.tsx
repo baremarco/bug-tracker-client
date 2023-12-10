@@ -5,12 +5,16 @@ import { useForm,  SubmitHandler, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import CommonSelect from "../common/CommonSelect/CommonSelect";
-import { USERS, PROJECTS } from "../../pages/ViewBug/consts/viewBug";
 import CommonButton from "../common/CommonButton/CommonButton";
 import CommonTextField from "../common/CommonTextField/CommonTextField";
 import { bugFormStyles } from "./styles";
+import useUser from "../../utils/hooks/useUser";
+import { ERROR_MSG_KEY } from "../ErrorPage/ComponentErrorPage";
+import { useNavigate } from "react-router-dom";
+import useProject from "../../utils/hooks/useProject";
+import useCreateBug from "../../utils/hooks/useCreateBug";
 
-interface IFormInput {
+export interface IFormInput {
     user: string;
     project: string;
     description: string;
@@ -39,9 +43,25 @@ function CreateBugFrom({ title, subtitle }: ICreateBugForm) {
     resolver: yupResolver(yupSchema)
   });
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+  const {users, error: userError} = useUser();
+  const {projects, error: projectError} = useProject();
+  const {error: createBugError, setBug, loading} = useCreateBug(methods.reset);
+
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     console.log(data);
+    try {
+      setBug(data);
+    } catch(err) {
+      console.log(err);
+    } 
   };
+
+  if (userError || projectError || createBugError) {
+    const errorMsg = userError?.message || projectError?.message || createBugError?.message;
+    navigate(`component-error-page?${ERROR_MSG_KEY}=${errorMsg}`);
+  }
 
   return (
     <Paper>
@@ -55,12 +75,12 @@ function CreateBugFrom({ title, subtitle }: ICreateBugForm) {
             <CommonSelect
               label='User'
               name='user'
-              options={USERS}
+              options={users}
             />
             <CommonSelect
-              label='User'
+              label='Project'
               name='project'
-              options={PROJECTS}
+              options={projects}
             />
             <CommonTextField 
               label='Bug description'
@@ -71,7 +91,7 @@ function CreateBugFrom({ title, subtitle }: ICreateBugForm) {
           </FormProvider>
         </Box>
         <Box sx={bugFormStyles.buttons}>
-          <CommonButton variant='contained' onClick={methods.handleSubmit(onSubmit)}>
+          <CommonButton variant='contained' loading={loading} onClick={methods.handleSubmit(onSubmit)}>
             Submit
           </CommonButton>
         </Box>

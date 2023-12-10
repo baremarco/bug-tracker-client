@@ -107,7 +107,6 @@ function ViewBug() {
     navigate(`component-error-page?${ERROR_MSG_KEY}=${errorMsg}`);
   }
 
-
   return (
     <GridPageWrapper>
       <Paper
