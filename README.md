@@ -29,6 +29,12 @@ export default {
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
 
+### Run the project
+1. run the client
+```bash
+npm run dev
+```
+
 ### Resources
 - [MaterialUI + React-hook-form](https://blog.logrocket.com/using-material-ui-with-react-hook-form/)
 - [MateriaUI](https://mui.com/components)
